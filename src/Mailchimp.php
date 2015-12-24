@@ -34,7 +34,6 @@ class Mailchimp
         $this->mailchimp = new BaseMailchimp($token);
     }
 
-
     /**
      * Folders related.
      *
