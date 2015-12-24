@@ -26,7 +26,7 @@ class MailchimpManager extends AbstractManager
     /**
      * Create a new mailchimp manager instance.
      *
-     * @param \Illuminate\Contracts\Config\Repository $config
+     * @param \Illuminate\Contracts\Config\Repository   $config
      * @param \BlueBayTravel\Mailchimp\MailchimpFactory $factory
      *
      * @return void
