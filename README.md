@@ -2,6 +2,7 @@
 
 Laravel 5 wrapper for the [Mailchimp](https://apidocs.mailchimp.com/api/2.0) API with multiple connections.
 
+[![StyleCI](https://styleci.io/repos/48535374/shield)](https://styleci.io/repos/48535374)
 [![Build Status](https://travis-ci.org/BlueBayTravel/Mailchimp.svg)](https://travis-ci.org/BlueBayTravel/Mailchimp)
 
 ```php
