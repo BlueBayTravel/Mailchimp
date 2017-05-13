@@ -13,6 +13,11 @@ namespace BlueBayTravel\Mailchimp;
 
 use Mailchimp as BaseMailchimp;
 
+/**
+ * This is the mailchimp class.
+ *
+ * @author James Brooks <james@bluebaytravel.co.uk>
+ */
 class Mailchimp
 {
     /**
