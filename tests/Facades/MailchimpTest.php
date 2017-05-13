@@ -9,10 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace BlueBayTravel\Tests\Mailchimp;
+namespace BlueBayTravel\Tests\Mailchimp\Facades;
 
 use BlueBayTravel\Mailchimp\Facades\Mailchimp;
 use BlueBayTravel\Mailchimp\MailchimpManager;
+use BlueBayTravel\Tests\Mailchimp\AbstractTestCase;
 use GrahamCampbell\TestBenchCore\FacadeTrait;
 
 class MailchimpTest extends AbstractTestCase
