@@ -11,11 +11,17 @@
 
 namespace BlueBayTravel\Mailchimp;
 
+use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Foundation\Application as LaravelApplication;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Lumen\Application as LumenApplication;
 
+/**
+ * This is the mailchimp service provider class.
+ *
+ * @author James Brooks <james@bluebaytravel.co.uk>
+ */
 class MailchimpServiceProvider extends ServiceProvider
 {
     /**
@@ -25,24 +31,24 @@ class MailchimpServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->setupConfig($this->app);
+        $this->setupConfig();
     }
 
     /**
      * Setup the config.
      *
-     * @param \Illuminate\Contracts\Foundation\Application $app
-     *
      * @return void
      */
-    protected function setupConfig(Application $app)
+    protected function setupConfig()
     {
         $source = realpath(__DIR__.'/../config/mailchimp.php');
-        if ($app instanceof LaravelApplication && $app->runningInConsole()) {
+
+        if ($this->app instanceof LaravelApplication && $this->app->runningInConsole()) {
             $this->publishes([$source => config_path('mailchimp.php')]);
-        } elseif ($app instanceof LumenApplication) {
-            $app->configure('mailchimp');
+        } elseif ($this->app instanceof LumenApplication) {
+            $this->app->configure('mailchimp');
         }
+
         $this->mergeConfigFrom($source, 'mailchimp');
     }
 
@@ -53,62 +59,56 @@ class MailchimpServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->registerFactory($this->app);
-        $this->registerManager($this->app);
-        $this->registerBindings($this->app);
+        $this->registerFactory();
+        $this->registerManager();
+        $this->registerBindings();
     }
 
     /**
      * Register the factory class.
      *
-     * @param \Illuminate\Contracts\Foundation\Application $app
-     *
      * @return void
      */
-    protected function registerFactory(Application $app)
+    protected function registerFactory()
     {
-        $app->singleton('mailchimp.factory', function ($app) {
+        $this->app->singleton('mailchimp.factory', function () {
             return new MailchimpFactory();
         });
 
-        $app->alias('mailchimp.factory', MailchimpFactory::class);
+        $this->app->alias('mailchimp.factory', MailchimpFactory::class);
     }
 
     /**
      * Register the manager class.
      *
-     * @param \Illuminate\Contracts\Foundation\Application $app
-     *
      * @return void
      */
-    protected function registerManager(Application $app)
+    protected function registerManager()
     {
-        $app->singleton('mailchimp', function ($app) {
+        $this->app->singleton('mailchimp', function (Container $app) {
             $config = $app['config'];
             $factory = $app['mailchimp.factory'];
 
             return new MailchimpManager($config, $factory);
         });
 
-        $app->alias('mailchimp', MailchimpManager::class);
+        $this->app->alias('mailchimp', MailchimpManager::class);
     }
 
     /**
      * Register the bindings.
      *
-     * @param \Illuminate\Contracts\Foundation\Application $app
-     *
      * @return void
      */
-    protected function registerBindings(Application $app)
+    protected function registerBindings()
     {
-        $app->bind('mailchimp.connection', function ($app) {
+        $this->app->bind('mailchimp.connection', function (Container $app) {
             $manager = $app['mailchimp'];
 
             return $manager->connection();
         });
 
-        $app->alias('mailchimp.connection', Mailchimp::class);
+        $this->app->alias('mailchimp.connection', Mailchimp::class);
     }
 
     /**
